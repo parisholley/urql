@@ -68,21 +68,21 @@ export const startWrite = (
 ) => {
   const operation = getMainOperation(request.query);
   const result: WriteResult = { data, dependencies: getCurrentDependencies() };
-  const operationName = store.rootFields[operation.operation];
+  const kind = store.rootFields[operation.operation];
 
   const ctx = makeContext(
     store,
     normalizeVariables(operation, request.variables),
     getFragments(request.query),
-    operationName,
-    operationName
+    kind,
+    kind
   );
 
   if (process.env.NODE_ENV !== 'production') {
-    pushDebugNode(operationName, operation);
+    pushDebugNode(kind, operation);
   }
 
-  writeSelection(ctx, operationName, getSelectionSet(operation), data);
+  writeSelection(ctx, kind, getSelectionSet(operation), data);
 
   if (process.env.NODE_ENV !== 'production') {
     popDebugNode();
@@ -103,29 +103,29 @@ export const writeOptimistic = (
     data: {} as Data,
     dependencies: getCurrentDependencies(),
   };
-  const operationName = store.rootFields[operation.operation];
+  const kind = store.rootFields[operation.operation];
 
   invariant(
-    operationName === store.rootFields['mutation'],
+    kind === store.rootFields['mutation'],
     'writeOptimistic(...) was called with an operation that is not a mutation.\n' +
       'This case is unsupported and should never occur.',
     10
   );
 
   if (process.env.NODE_ENV !== 'production') {
-    pushDebugNode(operationName, operation);
+    pushDebugNode(kind, operation);
   }
 
   const ctx = makeContext(
     store,
     normalizeVariables(operation, request.variables),
     getFragments(request.query),
-    operationName,
-    operationName,
+    kind,
+    kind,
     true
   );
 
-  writeSelection(ctx, operationName, getSelectionSet(operation), result.data!);
+  writeSelection(ctx, kind, getSelectionSet(operation), result.data!);
 
   if (process.env.NODE_ENV !== 'production') {
     popDebugNode();
