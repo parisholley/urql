@@ -1,5 +1,11 @@
 # @urql/exchange-persisted-fetch
 
+## 1.3.0
+
+### Minor Changes
+
+- Add `enforcePersistedQueries` option to `persistedFetchExchange`, which disables automatic persisted queries and retry logic, and instead assumes that persisted queries will be handled like normal GraphQL requests, by [@kitten](https://github.com/kitten) (See [#1358](https://github.com/FormidableLabs/urql/pull/1358))
+
 ## 1.2.3
 
 ### Patch Changes
